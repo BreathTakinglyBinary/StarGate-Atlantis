@@ -26,7 +26,7 @@ class ResponseRemoveTask extends Task {
         $this->client = $client;
     }
 
-    public function onRun(int $currentTick) : void {
+    public function onRun() : void {
         StarGateAtlantis::getInstance()->unsetResponse($this->uuid, $this->client);
     }
 }

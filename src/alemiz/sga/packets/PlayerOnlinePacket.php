@@ -3,7 +3,7 @@ namespace alemiz\sga\packets;
 
 use alemiz\sga\StarGateAtlantis;
 use alemiz\sga\utils\Convertor;
-use pocketmine\Player;
+use pocketmine\player\Player;
 
 class PlayerOnlinePacket extends StarGatePacket {
 

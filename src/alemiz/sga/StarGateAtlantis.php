@@ -16,7 +16,7 @@ use alemiz\sga\packets\WelcomePacket;
 use alemiz\sga\tasks\ReconnectTask;
 use alemiz\sga\utils\Convertor;
 use Closure;
-use pocketmine\Player;
+use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 
@@ -46,8 +46,8 @@ class StarGateAtlantis extends PluginBase{
     public function onEnable() : void {
         self::$instance = $this;
         @mkdir($this->getDataFolder());
-		$this->saveDefaultConfig();
-		$this->cfg = $this->getConfig();
+        $this->saveDefaultConfig();
+        $this->cfg = $this->getConfig();
 
 
         $this->initPackets();

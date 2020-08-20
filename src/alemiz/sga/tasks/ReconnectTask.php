@@ -17,7 +17,7 @@ class ReconnectTask extends Task {
         $this->plugin = $plugin;
     }
 
-    public function onRun(int $currentTick){
+    public function onRun() : void{
         $clients = $this->plugin->getClients();
 
         foreach ($clients as $name => $client){

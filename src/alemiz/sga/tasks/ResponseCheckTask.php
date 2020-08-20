@@ -41,7 +41,7 @@ abstract class ResponseCheckTask extends Task {
         $this->client = $client;
     }
 
-    public function onRun(int $currentTick) : void {
+    public function onRun() : void {
         if ($this->timeout === 0) return;
 
         $responses = StarGateAtlantis::getInstance()->getResponses($this->client);

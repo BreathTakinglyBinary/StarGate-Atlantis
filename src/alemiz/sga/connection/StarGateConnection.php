@@ -2,7 +2,7 @@
 namespace alemiz\sga\connection;
 
 use ClassLoader;
-use pocketmine\Thread;
+use pocketmine\thread\Thread;
 use Threaded;
 use ThreadedLogger;
 
@@ -64,7 +64,7 @@ class StarGateConnection extends Thread {
         $this->start();
     }
 
-    public function run() : void {
+    public function onRun() : void {
         $this->registerClassLoader();
         gc_enable();
         error_reporting(-1);
