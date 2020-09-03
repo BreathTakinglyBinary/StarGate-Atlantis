@@ -33,7 +33,7 @@ class Client extends Task {
     private $interface;
 
     /** @var int */
-    private $nextPing = 0;
+    private $nextPing = 20;
 
     /**
      * Client constructor.
@@ -57,17 +57,15 @@ class Client extends Task {
         $this->configName = $configName;
 
         $this->interface = new ClientInterface($this, $address, $port, $name, $password);
-
-        $this->nextPing = $plugin->getServer()->getTick() + 20;
         $plugin->getScheduler()->scheduleDelayedRepeatingTask($this, 20, $tickInterval);
     }
 
-    public function onRun(int $currentTick) : void {
+    public function onRun() : void {
         if (!$this->interface->process()) return;
 
-        if ($this->nextPing < $currentTick){
+        if ($this->nextPing-- <= 0){
             $this->interface->writeString("GATE_STATUS");
-            $this->nextPing += 20 * 10;
+            $this->nextPing = 20 * 10;
         }
 
         $message = $this->interface->readPacket();
