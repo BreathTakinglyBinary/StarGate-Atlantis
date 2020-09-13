@@ -7,6 +7,9 @@ use Threaded;
 
 class StarGateConnection extends AsyncWorker {
 
+    /** @var int */
+    private static $workerId = 0;
+
     /** @var StarGateSocket */
     private $starGateSocket;
     /** @var resource */
@@ -45,7 +48,7 @@ class StarGateConnection extends AsyncWorker {
      * @param string                    $password
      */
     public function __construct(AttachableThreadedLogger $logger, string $address, int $port, string $name, string $configName, string $password){
-        parent::__construct($logger, 1,1024);
+        parent::__construct($logger, self::$workerId++,1024);
         $this->address = $address;
         $this->port = $port;
         $this->name = $name;
