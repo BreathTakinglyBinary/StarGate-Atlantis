@@ -8,6 +8,7 @@ use alemiz\sga\packets\StarGatePacket;
 use alemiz\sga\packets\WelcomePacket;
 use alemiz\sga\StarGateAtlantis;
 use Closure;
+use pocketmine\Server;
 
 class ClientInterface{
 
@@ -34,9 +35,7 @@ class ClientInterface{
      */
     public function __construct(Client $client, string $address, int $port, string $name, string $password){
         $this->client = $client;
-
-        $server = $client->getServer();
-        $this->connection = new StarGateConnection($server->getLogger(), $server->getLoader(), $address, $port, $name, $client->getConfigName(), $password);
+        $this->connection = new StarGateConnection(Server::getInstance()->getLogger(), $address, $port, $name, $client->getConfigName(), $password);
     }
 
     /**

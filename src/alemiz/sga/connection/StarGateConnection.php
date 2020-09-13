@@ -1,15 +1,12 @@
 <?php
 namespace alemiz\sga\connection;
 
-use ClassLoader;
-use pocketmine\thread\Thread;
+use AttachableThreadedLogger;
+use pocketmine\scheduler\AsyncWorker;
 use Threaded;
-use ThreadedLogger;
 
-class StarGateConnection extends Thread {
+class StarGateConnection extends AsyncWorker {
 
-    /** @var ThreadedLogger */
-    private $logger;
     /** @var StarGateSocket */
     private $starGateSocket;
     /** @var resource */
@@ -40,32 +37,28 @@ class StarGateConnection extends Thread {
 
     /**
      * StarGateConnection constructor.
-     * @param ThreadedLogger $logger
-     * @param ClassLoader $loader
-     * @param string $address
-     * @param int $port
-     * @param string $name
-     * @param string $configName
-     * @param string $password
+     * @param AttachableThreadedLogger $logger
+     * @param string                    $address
+     * @param int                       $port
+     * @param string                    $name
+     * @param string                    $configName
+     * @param string                    $password
      */
-    public function __construct(ThreadedLogger $logger, ClassLoader $loader, string $address, int $port, string $name, string $configName, string $password){
-        $this->logger = $logger;
+    public function __construct(AttachableThreadedLogger $logger, string $address, int $port, string $name, string $configName, string $password){
+        parent::__construct($logger, 1,1024);
         $this->address = $address;
         $this->port = $port;
         $this->name = $name;
         $this->configName = $configName;
         $this->password = $password;
 
-        $this->setClassLoader($loader);
-
         $this->input = new Threaded();
         $this->output = new Threaded();
 
-        $this->start();
+        $this->start(PTHREADS_INHERIT_CONSTANTS | PTHREADS_INHERIT_INI);
     }
 
-    public function onRun() : void {
-        $this->registerClassLoader();
+    public function onRun() : void{
         gc_enable();
         error_reporting(-1);
         ini_set('display_errors', '1');
@@ -229,13 +222,6 @@ class StarGateConnection extends Thread {
      */
     public function getConfigName() : string {
         return $this->configName;
-    }
-
-    /**
-     * @return ThreadedLogger
-     */
-    public function getLogger(): ThreadedLogger {
-        return $this->logger;
     }
 
     public function getThreadName(): string {
